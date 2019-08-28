@@ -24,6 +24,60 @@ class ClientController extends Controller
         }
     }
 
+    public function login_in(Request $request){
+        $email=$request->input('email');
+        $mdp=$request->input('password');
+
+        $con=DB::table('utilisateur')->insert([
+            'code_util'=>rand(4000,1500000),
+           'email_util'=>$email,
+           'nom_util'=>$request->input('nom'),
+           'password_util'=>password_hash($mdp,PASSWORD_BCRYPT),
+            'idgroupe_utilisateur'=>1
+        ]);
+
+        if($con){
+            $rep=array('response'=>'bravo ');
+            return response()->json($rep,200);
+        }else{
+            $rep=array('response'=>'données incorrectes');
+            return response()->json($rep,404);
+        }
+    }
+
+
+    public function login(Request $request){
+
+        $email=$request->input('email');
+        $mdp=$request->input('password');
+
+        $hash=\Illuminate\Support\Facades\DB::table('utilisateur')->where([
+            'email_util'=>$email
+        ])->select('password_util')->value('password_util');
+
+        $login=DB::table('utilisateur')->where([
+            'email_util'=>$email
+        ])->get();
+
+
+        if($login && $this->passV($mdp,$hash)){
+            $rep=array('response'=>'vous etes conncecte ');
+            return response()->json($rep,200);
+        }else{
+            $rep=array('response'=>'données incorrectes');
+            return response()->json($rep,404);
+        }
+    }
+
+
+    public function passV($pass,$hash){
+        if(password_verify($pass,$hash)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
