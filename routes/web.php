@@ -25,3 +25,4 @@ Route::resource('api/vehicule','VehiculeController')->middleware('cors');
 Route::resource('api/retourVoiture','retourVoitureController')->middleware('cors');
 Route::get('api/login','ClientController@login')->name('login')->middleware('cors');
 Route::post('api/login_in','ClientController@login_in')->name('login_in')->middleware('cors');
+Route::get('api/test','vehiculeController@test');

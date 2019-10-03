@@ -48,6 +48,7 @@ class ContratController extends Controller
             'date_depart'=>$request->input('date_depart'),
             'date_retour_prevue'=>$request->input('date_retour'),
             'num_immatriculation'=>$request->input('mat'),
+            'montant'=>$request->input('montant'),
             'code_client'=>$request->input('code_client')
         ]);
 
@@ -97,6 +98,7 @@ class ContratController extends Controller
             'date_depart'=>$request->input('date_depart'),
             'date_retour_prevue'=>$request->input('date_retour'),
             'num_immatriculation'=>$request->input('mat'),
+            'montant'=>$request->input('montant'),
             'code_client'=>$request->input('code_client')
         ]);
 

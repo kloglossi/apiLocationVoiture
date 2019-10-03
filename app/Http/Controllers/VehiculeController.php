@@ -23,6 +23,11 @@ class VehiculeController extends Controller
         }
     }
 
+
+    public function test(){
+        return response()->json(['test'=>'echo'],200);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -42,6 +47,22 @@ class VehiculeController extends Controller
     public function store(Request $request)
     {
 
+        //Get filename with extension
+        $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+        // Get just the filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+        // Get extension
+       $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+        // Create new filename
+        $filenameToStore = $filename.'_'.time().'.'.$extension;
+
+        // Uplaod image
+        $path= $request->file('cover_image')->storeAs('public/album_covers', $filenameToStore);
+
+
         $v=DB::table('vehicule')->insert([
            'num_immatriculation'=>$request->input('num'),
             'carburant'=>$request->input('carburant'),
@@ -50,7 +71,7 @@ class VehiculeController extends Controller
             'modele'=>$request->input('modele'),
             'couleur'=>$request->input('couleur'),
             'cout_par_jour'=>$request->input('cout'),
-            'reglement'=>$request->input('reglement')
+            'cover_image'=>$filenameToStore
         ]);
 
         if($v){

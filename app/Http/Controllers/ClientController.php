@@ -17,7 +17,7 @@ class ClientController extends Controller
         $cl=DB::table('client')->get();
         if($cl){
             $res=array('response'=>'succes',$cl);
-            return response()->json($res,200);
+            return response()->json($cl,200);
         }else{
             $res=array('response'=>'echec');
             return response()->json($res,404);
@@ -96,7 +96,10 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $code=rand(500,50000);
+
         $cl=DB::table('client')->insert([
             'code_client'=>$code,
             'nom_client'=>$request->input('nom'),
@@ -124,7 +127,14 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        $cl=DB::table('client')->where('code_client',$id)->get()->first();
+        if($cl){
+            $res=array('response'=>'succes',$cl);
+            return response()->json($cl,200);
+        }else{
+            $res=array('response'=>'echec');
+            return response()->json($res,404);
+        }
     }
 
     /**
